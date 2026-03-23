@@ -1,6 +1,7 @@
 from direct.showbase.ShowBase import ShowBase
 from direct.interval.IntervalGlobal import LerpPosInterval, Sequence, LerpHprInterval, Parallel
 from panda3d.core import Point3
+
 class Game(ShowBase):
     def __init__(self):
         super().__init__()
@@ -19,35 +20,35 @@ class Game(ShowBase):
         self.start_pos = (0, 90, 20)
         self.finish_pos = (100, 90,20)
 
-        self.interval = LerpPosInterval(self.fish, duration=5.0, pos=self.finish_pos,startPos=self.fish.getPos())
+        self.interval = LerpPosInterval(self.fish, duration=3, pos=self.finish_pos,startPos=self.fish.getPos())
         #движение из точки startPos в точку pos
 
         self.rotation_interval = LerpHprInterval(self.fish, duration=2.0, hpr=(self.fish.getH()+180, 0, 0))
         #поворот вокруг оси на указанный угол
 
-        self.secq = Sequence(self.interval,self.rotation_interval)
-        #создание очередей анимаций действий
+        self.parallel = Parallel(self.interval,self.rotation_interval)
+        #определяем какие анимации будут идти параллельно
 
 
-        self.secq.start()
-        #запуск очереди анимаций
+        self.parallel.start()
+        #запуск анимаций
 
         taskMgr.doMethodLater(0.1, self.reverse, "checkMovementStatusTask")
         #установка задачи на постоянное выполнение с интервалом в 0.1 может быть и другой, далее функция которая будет вызываться, имя задачи в система
 
-    
+
 
     def reverse(self, task):
-        if self.secq.isStopped():#проверка остановился ли цикл анимаций и если остановился то перезапускаем
+        if self.parallel.isStopped():#проверка остановился ли цикл анимаций и если остановился то перезапускаем
             self.start_pos, self.finish_pos = self.finish_pos, self.start_pos
             self.interval = LerpPosInterval(self.fish, duration=5.0, pos=self.finish_pos,
                                     startPos=self.fish.getPos())
 
             self.rotation_interval = LerpHprInterval(self.fish, duration=2.0, hpr=(self.fish.getH()+180, 0, 0))
-            self.secq = Sequence(self.interval,self.rotation_interval)
-            self.secq.start()
+            self.parallel = Parallel(self.interval,self.rotation_interval)
+            self.parallel.start()
 
-        return task.again #возвращаем сигнал для возвращаения функции в список задач
+        return task.again #передаем сигнал для возвращаения функции в список задач
 
 
 
