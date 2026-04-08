@@ -33,7 +33,7 @@ class Game(ShowBase):
         self.props = WindowProperties()# получаем обькт наделенный свойствами для взаимодействия с окном
         self.props.setCursorHidden(True)  # Скрыть курсор
         self.props.setMouseMode(WindowProperties.M_relative)  #Реализуем движение мыши относительно обьекта
-        base.win.requestProperties(self.props) #устанавливаем набор изменных свойсв
+        base.win.requestProperties(self.props) #устанавливаем набор изменных свойств
 
         self.rotation_angle = 0  # Накопленный угол поворота
 
