@@ -28,7 +28,6 @@ class Game(ShowBase):
        base.camera.setPos(0, 0, 1.5)
 
 
-
     def mouse_use(self):
         self.props = WindowProperties()# получаем обькт наделенный свойствами для взаимодействия с окном
         self.props.setCursorHidden(True)  # Скрыть курсор
